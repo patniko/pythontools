@@ -20,7 +20,7 @@ def count_files(dir, filters, print_file_count, print_directory_count, first_cal
     for root, dirs, files in os.walk(dir, topdown=False):
         for name in files:
             file_path = os.path.join(root, name)
-            if name.endswith('.py'):
+            if name.endswith('.py') and "test" not in file_path and "migration" not in file_path:
                 file_count = file_lines(file_path)
                 count += file_count
                 if print_file_count:
@@ -34,11 +34,7 @@ def count_files(dir, filters, print_file_count, print_directory_count, first_cal
     return count
 
 directory = len(sys.argv) > 1 and sys.argv[1] or "./"
-print_recursive =  len(sys.argv) > 2 and any(argument == "-r" for argument in sys.argv[2:])
-print_file_count =  len(sys.argv) > 2 and any(argument == "-f" for argument in sys.argv[2:])
-print_directory_count =  len(sys.argv) > 2 and any(argument == "-d" for argument in sys.argv[2:])
 
-print("Scanning {} {}...".format("recursively" if print_recursive else "top of", directory))
-print("Flags: {} {} {}".format("print_file_count" if print_file_count else "", "print_directory_count" if print_directory_count else "", "print_recursive" if print_recursive else ""))
-print(count_files(directory, filters, print_file_count, True, True))
+print("Scanning {}...".format(directory))
+print(count_files(directory, filters, False, True, True))
 
